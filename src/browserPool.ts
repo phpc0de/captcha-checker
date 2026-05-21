@@ -46,8 +46,7 @@ export class BrowserProcessPool {
                     const args = this.getLaunchArguments(i);
                     const options: any = {
                         headless: true,
-                        args: args,
-                        defaultViewport: { width: 1920, height: 1080 }
+                        args: args
                     };
 
                     console.log(`[BrowserPool] Spawning instance ${i + 1}/${this.maxProcesses} (Attempt ${attempts + 1})`);
