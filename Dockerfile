@@ -26,4 +26,4 @@ COPY . .
 # 核心适配点 2：注入环境变量，显式告知 Patchright/Playwright 直接调用容器内的真实 Chrome 路径
 ENV PATCHRIGHT_EXECUTABLE_PATH=/usr/bin/google-chrome-stable
 
-CMD ["node", "./bin/captcha-checker.js", "src/main.ts"]
+CMD ["npx", "tsx", "src/main.ts"]
