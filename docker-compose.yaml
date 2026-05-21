@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  crawler:
-    image: ghcr.io/${GITHUB_USER:-user}/${GITHUB_REPO:-repo}:latest
-    container_name: antispam-crawler
+  captcha-checker:
+    image: ghcr.io/phpc0de/captcha-checker:latest
+    container_name: captcha-checker
     ports:
-      - "3000:3000"
+      - "3330:3330"
     environment:
       # OpenAI兼容接口配置
       - AI_API_BASE=${AI_API_BASE:-https://api.openai.com/v1}
