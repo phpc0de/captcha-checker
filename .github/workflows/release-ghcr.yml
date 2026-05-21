@@ -33,9 +33,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build web app
-        run: npm run build
-
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
