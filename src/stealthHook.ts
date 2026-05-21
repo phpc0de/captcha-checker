@@ -1,4 +1,4 @@
-import { Page } from 'puppeteer';
+import { Page } from 'patchright';
 
 export class ExecutionStackEnforcer {
     async injectRuntimeHooks(page: Page): Promise<void> {

@@ -1,4 +1,4 @@
-import { Browser, BrowserContext } from 'puppeteer';
+import { Browser, BrowserContext } from 'patchright';
 
 export class ContextTopologyManager {
     async createContext(browser: Browser, proxyUrl: string, userAgent: string): Promise<BrowserContext> {
@@ -8,7 +8,7 @@ export class ContextTopologyManager {
             contextOptions.proxyServer = proxyUrl;
         }
 
-        const context = await browser.createIncognitoBrowserContext(contextOptions);
+        const context = await browser.newContext(contextOptions);
         
         // Auto-inject to all pages created in this context
         context.on('targetcreated', async (target) => {

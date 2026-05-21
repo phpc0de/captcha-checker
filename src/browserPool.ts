@@ -1,4 +1,4 @@
-import puppeteer, { Browser, PuppeteerLaunchOptions } from 'puppeteer';
+import { chromium, Browser } from 'patchright';
 
 export class BrowserProcessPool {
     private pool: Browser[] = [];
@@ -44,14 +44,17 @@ export class BrowserProcessPool {
             while (attempts < maxAttempts && !launched) {
                 try {
                     const args = this.getLaunchArguments(i);
-                    const options: PuppeteerLaunchOptions = {
+                    const options: any = {
                         headless: true,
                         args: args,
                         defaultViewport: { width: 1920, height: 1080 }
                     };
 
                     console.log(`[BrowserPool] Spawning instance ${i + 1}/${this.maxProcesses} (Attempt ${attempts + 1})`);
-                    const browser = await puppeteer.launch(options);
+                    if (process.env.PATCHRIGHT_EXECUTABLE_PATH) {
+                        options.executablePath = process.env.PATCHRIGHT_EXECUTABLE_PATH;
+                    }
+                    const browser = await chromium.launch(options);
                     
                     browser.on('disconnected', () => {
                         console.error(`[BrowserPool] Browser instance ${i} disconnected unexpectedly.`);
