@@ -17,7 +17,7 @@ const pool = new BrowserProcessPool(3);
  * =========================================================================
  */
 app.post('/api/check-captcha', async (req, res) => {
-    const { targetUrl } = req.body;
+    const { targetUrl, proxy } = req.body;
     if (!targetUrl) {
         return res.status(400).json({ success: false, error: "Missing targetUrl in request body." });
     }
@@ -25,12 +25,18 @@ app.post('/api/check-captcha', async (req, res) => {
     let browser: Browser | null = null;
     let context: BrowserContext | null = null;
     try {
-        // 使用 patchright 启动无痕环境进行检测
-        const browser = await chromium.launch({ 
-    headless: true,
-    executablePath: process.env.PATCHRIGHT_EXECUTABLE_PATH, // 确保读取到了容器内的路径
-    args: ['--no-sandbox', '--disable-setuid-sandbox']     // 必须加上这两行
-});
+        const launchOptions: any = { 
+            headless: true,
+            executablePath: process.env.PATCHRIGHT_EXECUTABLE_PATH, 
+            args: ['--no-sandbox', '--disable-setuid-sandbox']     
+        };
+
+        // 如果传入了代理，则挂载到启动参数中
+        if (proxy && proxy.trim() !== '') {
+            launchOptions.proxy = { server: proxy };
+        }
+
+        browser = await chromium.launch(launchOptions);
 
         context = await browser.newContext();
         const page = await context.newPage();
